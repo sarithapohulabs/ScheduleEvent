@@ -11,7 +11,7 @@ const PORT = 5050;
 const CLIENT_ID = "47867944372-ul9k71p96a6vi41d1233528or65c2j9v.apps.googleusercontent.com";
 const CLIENT_SECRET = "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";
 const REDIRECT_URL = "http://localhost:5050/google/redirect";
-const API_KEY = "AIzaSyCfaWWCq6NDdQVRjNXMi85vy1XVnd71nQw";
+const API_KEY = "AIzaSyD015LejcK1rzEblkyRuswQfJnfICZCsoQ";
 
 
 const calendar = google.calendar({
@@ -42,9 +42,10 @@ app.get("/google/redirect", async (req, res) => {
   const code = req.query.code;
   const {tokens}  = await oauth2Client.getToken(code);
   oauth2Client.setCredentials(tokens);
-
+  console.log("Code",code)
   res.send({
     msg: "You have Succesfully logged In!",
+    data:[code,oauth2Client.credentials.access_token]
   });
 });
 
@@ -55,14 +56,14 @@ app.get("/scheduleMeeting", async (req, res) => {
     auth: oauth2Client,
     conferenceDataVersion: 1,
     requestBody: {
-      summary: "This is an event for meeting demo 3",
+      summary: "Meetibg for event",
       description: "The test event for both schedule event and create meeting",
       start: {
-        dateTime: dayjs(new Date()).add(4, "day").toISOString(),
+        dateTime: dayjs(new Date()).add(1, "day").toISOString(),
         timeZone: "Asia/Kolkata"
       },
       end: {
-        dateTime: dayjs(new Date()).add(5, "day").add(1,"hour").toISOString(),
+        dateTime: dayjs(new Date()).add(2, "day").add(1,"hour").toISOString(),
         timeZone: "Asia/Kolkata"
       },
       conferenceData:{
@@ -73,8 +74,6 @@ app.get("/scheduleMeeting", async (req, res) => {
       attendees: [
         {email: "vineethvaddi069@gmail.com"},
         {email: "parvej.pohulabs@gmail.com"},
-        {email: "apravali.13@gmail.com"},
-        {email: "balram.pohulabs@gmail.com"}
       ],
     },
   });
